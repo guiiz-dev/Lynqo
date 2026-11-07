@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pesquisa Lynqo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: coluna única estreita; formulário em cartões; resultados só para quem edita a página. */
+:root { --ink:#101745; --text:#4b5174; --muted:#7b819f; --brand:#6a4df4; --brand-2:#8d75ff; --tint:#f1f3ff; --tint-2:#e5e8ff; --line:#e4e7f4; --ok:#157a3b; --okbg:#e1f7e9; --warn:#fff4d6; --warn-ink:#7a5a00; --font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color-scheme:light; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--tint); color:var(--text); font-family:var(--font); font-size:14.5px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+h1,h2,h3,p,ul,fieldset { margin:0; } ul { padding:0; list-style:none; } fieldset { border:0; padding:0; min-width:0; }
+button, select, textarea { font:inherit; color:inherit; } button { cursor:pointer; }
+:focus-visible { outline:3px solid var(--brand-2); outline-offset:2px; border-radius:8px; }
+.wrap { max-width:720px; margin-inline:auto; padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); padding-block:28px 48px; }
+.brand { display:flex; align-items:center; gap:8px; font-weight:800; font-size:20px; color:var(--ink); }
+.brand svg { width:28px; height:28px; }
+h1 { margin-top:18px; font-size:clamp(1.6rem,5vw,2rem); line-height:1.2; font-weight:800; color:var(--ink); letter-spacing:-.02em; text-wrap:balance; }
+.lead { margin-top:8px; max-width:560px; }
+.tabs { margin-top:20px; display:flex; gap:8px; }
+.tab { border:1.5px solid #cfd3e6; background:#fff; border-radius:999px; padding:8px 16px; font-weight:700; font-size:13px; color:var(--ink); }
+.tab[aria-selected="true"] { background:var(--brand); border-color:var(--brand); color:#fff; }
+.card { margin-top:14px; background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px; }
+.q > legend, .q > label.t { display:block; font-weight:700; color:var(--ink); font-size:14.5px; padding:0; margin-bottom:10px; }
+.q .opt { font-weight:500; color:var(--muted); font-size:12px; }
+select, textarea { width:100%; border:1.5px solid #cfd3e6; border-radius:10px; padding:10px 12px; background:#fff; }
+textarea { resize:vertical; min-height:84px; }
+.row { display:flex; flex-wrap:wrap; gap:8px; }
+.pick { border:1.5px solid #d7dbee; background:#fff; border-radius:999px; padding:8px 14px; font-size:13px; font-weight:600; color:var(--ink); }
+.pick[aria-pressed="true"], .pick[aria-checked="true"] { background:var(--brand); border-color:var(--brand); color:#fff; }
+.scale { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; }
+.scale .pick { border-radius:12px; padding:10px 0; text-align:center; font-size:15px; }
+.ends { display:flex; justify-content:space-between; margin-top:6px; font-size:11.5px; color:var(--muted); }
+.btn { border:0; border-radius:999px; background:var(--brand); color:#fff; font-weight:700; padding:13px 26px; font-size:14.5px; box-shadow:0 8px 20px -8px rgba(106,77,244,.7); }
+.btn:disabled { opacity:.55; cursor:not-allowed; box-shadow:none; }
+.actions { margin-top:18px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.msg { font-size:13px; font-weight:600; } .msg.err { color:#b42318; } .msg.ok { color:var(--ok); }
+.note { margin-top:14px; background:var(--warn); color:var(--warn-ink); border-radius:12px; padding:10px 14px; font-size:13px; }
+.thanks { text-align:center; padding:34px 20px; }
+.thanks h2 { color:var(--ink); font-size:1.4rem; font-weight:800; }
+.thanks p { margin-top:8px; }
+.stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:14px; }
+.stat { background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px; }
+.stat b { display:block; font-size:1.7rem; line-height:1.1; color:var(--ink); font-weight:800; font-variant-numeric:tabular-nums; }
+.stat span { font-size:12px; color:var(--muted); }
+.card h3 { font-size:14.5px; font-weight:800; color:var(--ink); margin-bottom:12px; }
+.bar { display:grid; grid-template-columns:minmax(80px,150px) 1fr 38px; gap:10px; align-items:center; font-size:13px; margin-top:8px; }
+.bar .tr { height:12px; background:var(--tint-2); border-radius:999px; overflow:hidden; }
+.bar .fi { height:100%; background:linear-gradient(90deg,var(--brand-2),var(--brand)); border-radius:999px; }
+.bar .n { text-align:right; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; }
+.bar .l { overflow-wrap:anywhere; }
+.comments li { background:var(--tint); border-radius:10px; padding:10px 12px; font-size:13px; overflow-wrap:anywhere; }
+.comments li + li { margin-top:8px; }
+.empty { color:var(--muted); font-size:13px; }
+[hidden] { display:none !important; }
+@media (max-width:520px) { .stats { grid-template-columns:1fr; } .bar { grid-template-columns:100px 1fr 30px; } }
+@media (prefers-reduced-motion:reduce) { * { transition:none !important; } }
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head><body>
+
+<main class="wrap">
+  <div class="brand"><svg viewBox="0 0 36 36" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8d75ff"/><stop offset="1" stop-color="#5a3df0"/></linearGradient></defs><path d="M5 8a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v11a2 2 0 0 0 2 2h8a5 5 0 0 1 5 5v1a5 5 0 0 1-5 5H10a5 5 0 0 1-5-5z" fill="url(#lg)"/><circle cx="27" cy="9" r="4" fill="#9ab8ff"/></svg>Lynqo</div>
+  <h1>Ajude a construir o Lynqo</h1>
+  <p class="lead">Responda em menos de 1 minuto. Não pedimos nome nem contato. Suas respostas vão para a equipe do projeto da feira de ciências.</p>
+
+  <section id="formView">
+    <form id="form" novalidate>
+      <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
+      <div class="card q"><label class="t" for="native">1. Qual idioma você fala melhor?</label><select id="native"></select></div>
+      <div class="card q"><label class="t" for="want">2. Qual idioma você mais quer aprender?</label><select id="want"></select></div>
+      <fieldset class="card q"><legend>3. Você já usou algum site ou app para aprender idiomas?</legend>
+        <div class="row" id="used" role="radiogroup"></div></fieldset>
+      <fieldset class="card q"><legend>4. O que mais atrapalha você a praticar? <span class="opt">(marque quantas quiser)</span></legend>
+        <div class="row" id="diff"></div></fieldset>
+      <fieldset class="card q"><legend>5. O quanto a tradução automática ajudaria você a conversar?</legend>
+        <div class="scale" id="s-tr" role="radiogroup"></div><div class="ends"><span>Quase nada</span><span>Muito</span></div></fieldset>
+      <fieldset class="card q"><legend>6. O quanto você usaria o Lynqo?</legend>
+        <div class="scale" id="s-use" role="radiogroup"></div><div class="ends"><span>Não usaria</span><span>Com certeza</span></div></fieldset>
+      <div class="card q"><label class="t" for="txt">7. Quer deixar uma sugestão? <span class="opt">(opcional)</span></label><textarea id="txt" maxlength="300" placeholder="Ex.: queria praticar inglês jogando com alguém…"></textarea></div>
+      <div class="actions"><button class="btn" id="send" type="submit">Enviar respostas</button><span class="msg" id="msg" role="status"></span></div>
+    </form>
+  </section>
+
+  <section id="thanksView" hidden>
+    <div class="card thanks"><h2>Obrigado por responder!</h2><p>Sua opinião ajuda a decidir o que o Lynqo vai ter primeiro.</p>
+      <div class="actions" style="justify-content:center"><button class="tab" id="again" type="button">Responder de novo</button></div></div>
+  </section>
+
+  </main>
+
+<script>
+(function () {
+  var LANGS = ['Português','Inglês','Espanhol','Francês','Alemão','Italiano','Japonês','Coreano','Chinês','Outro'];
+  var USED = ['Uso hoje','Já usei','Nunca usei'];
+  var DIFF = ['Falta de pessoas para conversar','Vergonha de errar','Não entender o que a pessoa diz','Custo das aulas','Falta de tempo'];
+  var $ = function (id) { return document.getElementById(id); };
+  function el(t, c, x) { var n = document.createElement(t); if (c) n.className = c; if (x != null) n.textContent = x; return n; }
+
+  var a = { native:'Português', want:'Inglês', used:null, diff:[], tr:0, use:0 };
+  ['native','want'].forEach(function (id) {
+    var s = $(id); LANGS.forEach(function (l) { var o = el('option', null, l); o.value = l; s.appendChild(o); });
+    s.value = a[id]; s.addEventListener('change', function () { a[id] = s.value; });
+  });
+  USED.forEach(function (u) {
+    var b = el('button', 'pick', u); b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false');
+    b.addEventListener('click', function () {
+      a.used = u; [].forEach.call($('used').children, function (x) { x.setAttribute('aria-checked', x === b ? 'true' : 'false'); });
+    });
+    $('used').appendChild(b);
+  });
+  DIFF.forEach(function (d) {
+    var b = el('button', 'pick', d); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function () {
+      var i = a.diff.indexOf(d); if (i >= 0) a.diff.splice(i, 1); else a.diff.push(d);
+      b.setAttribute('aria-pressed', i < 0 ? 'true' : 'false');
+    });
+    $('diff').appendChild(b);
+  });
+  function scale(id, key) {
+    for (var n = 1; n <= 5; n++) (function (n) {
+      var b = el('button', 'pick', String(n)); b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false');
+      b.addEventListener('click', function () { a[key] = n; [].forEach.call($(id).children, function (x) { x.setAttribute('aria-checked', x === b ? 'true' : 'false'); }); });
+      $(id).appendChild(b);
+    })(n);
+  }
+  scale('s-tr', 'tr'); scale('s-use', 'use');
+
+  var KEY = 'lynqo_survey_id', sid = null;
+  try { sid = localStorage.getItem(KEY); } catch (e) {}
+  if (!sid) {
+    sid = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now().toString(16) + Math.random().toString(16).slice(2));
+    try { localStorage.setItem(KEY, sid); } catch (e) {}
+  }
+  function setMsg(t, c) { var m = $('msg'); m.textContent = t || ''; m.className = 'msg' + (c ? ' ' + c : ''); }
+  $('form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (!a.used || !a.tr || !a.use) { setMsg('Responda as perguntas 3, 5 e 6 para enviar.', 'err'); return; }
+    $('send').disabled = true; setMsg('Enviando…');
+    try {
+      var r = await fetch('/api/survey', { method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify({ id:sid, website:$('website').value, native:a.native, want:a.want, used:a.used, diff:a.diff, tr:a.tr, use:a.use, text:$('txt').value }) });
+      if (!r.ok) throw new Error(String(r.status));
+      setMsg(''); $('formView').hidden = true; $('thanksView').hidden = false; window.scrollTo(0, 0);
+    } catch (err) { setMsg('Não foi possível enviar. Tente de novo em instantes.', 'err'); }
+    $('send').disabled = false;
+  });
+  $('again').addEventListener('click', function () { $('thanksView').hidden = true; $('formView').hidden = false; });
+})();
+</script>
+
+</body></html>

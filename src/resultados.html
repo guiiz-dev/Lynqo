@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Resultados da pesquisa | Lynqo</title>
+<meta name="robots" content="noindex">
+<style>
+/* Layout: coluna única estreita; formulário em cartões; resultados só para quem edita a página. */
+:root { --ink:#101745; --text:#4b5174; --muted:#7b819f; --brand:#6a4df4; --brand-2:#8d75ff; --tint:#f1f3ff; --tint-2:#e5e8ff; --line:#e4e7f4; --ok:#157a3b; --okbg:#e1f7e9; --warn:#fff4d6; --warn-ink:#7a5a00; --font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; color-scheme:light; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--tint); color:var(--text); font-family:var(--font); font-size:14.5px; line-height:1.55; -webkit-font-smoothing:antialiased; }
+h1,h2,h3,p,ul,fieldset { margin:0; } ul { padding:0; list-style:none; } fieldset { border:0; padding:0; min-width:0; }
+button, select, textarea { font:inherit; color:inherit; } button { cursor:pointer; }
+:focus-visible { outline:3px solid var(--brand-2); outline-offset:2px; border-radius:8px; }
+.wrap { max-width:720px; margin-inline:auto; padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); padding-block:28px 48px; }
+.brand { display:flex; align-items:center; gap:8px; font-weight:800; font-size:20px; color:var(--ink); }
+.brand svg { width:28px; height:28px; }
+h1 { margin-top:18px; font-size:clamp(1.6rem,5vw,2rem); line-height:1.2; font-weight:800; color:var(--ink); letter-spacing:-.02em; text-wrap:balance; }
+.lead { margin-top:8px; max-width:560px; }
+.tabs { margin-top:20px; display:flex; gap:8px; }
+.tab { border:1.5px solid #cfd3e6; background:#fff; border-radius:999px; padding:8px 16px; font-weight:700; font-size:13px; color:var(--ink); }
+.tab[aria-selected="true"] { background:var(--brand); border-color:var(--brand); color:#fff; }
+.card { margin-top:14px; background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px; }
+.q > legend, .q > label.t { display:block; font-weight:700; color:var(--ink); font-size:14.5px; padding:0; margin-bottom:10px; }
+.q .opt { font-weight:500; color:var(--muted); font-size:12px; }
+select, textarea { width:100%; border:1.5px solid #cfd3e6; border-radius:10px; padding:10px 12px; background:#fff; }
+textarea { resize:vertical; min-height:84px; }
+.row { display:flex; flex-wrap:wrap; gap:8px; }
+.pick { border:1.5px solid #d7dbee; background:#fff; border-radius:999px; padding:8px 14px; font-size:13px; font-weight:600; color:var(--ink); }
+.pick[aria-pressed="true"], .pick[aria-checked="true"] { background:var(--brand); border-color:var(--brand); color:#fff; }
+.scale { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; }
+.scale .pick { border-radius:12px; padding:10px 0; text-align:center; font-size:15px; }
+.ends { display:flex; justify-content:space-between; margin-top:6px; font-size:11.5px; color:var(--muted); }
+.btn { border:0; border-radius:999px; background:var(--brand); color:#fff; font-weight:700; padding:13px 26px; font-size:14.5px; box-shadow:0 8px 20px -8px rgba(106,77,244,.7); }
+.btn:disabled { opacity:.55; cursor:not-allowed; box-shadow:none; }
+.actions { margin-top:18px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.msg { font-size:13px; font-weight:600; } .msg.err { color:#b42318; } .msg.ok { color:var(--ok); }
+.note { margin-top:14px; background:var(--warn); color:var(--warn-ink); border-radius:12px; padding:10px 14px; font-size:13px; }
+.thanks { text-align:center; padding:34px 20px; }
+.thanks h2 { color:var(--ink); font-size:1.4rem; font-weight:800; }
+.thanks p { margin-top:8px; }
+.stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:14px; }
+.stat { background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px; }
+.stat b { display:block; font-size:1.7rem; line-height:1.1; color:var(--ink); font-weight:800; font-variant-numeric:tabular-nums; }
+.stat span { font-size:12px; color:var(--muted); }
+.card h3 { font-size:14.5px; font-weight:800; color:var(--ink); margin-bottom:12px; }
+.bar { display:grid; grid-template-columns:minmax(80px,150px) 1fr 38px; gap:10px; align-items:center; font-size:13px; margin-top:8px; }
+.bar .tr { height:12px; background:var(--tint-2); border-radius:999px; overflow:hidden; }
+.bar .fi { height:100%; background:linear-gradient(90deg,var(--brand-2),var(--brand)); border-radius:999px; }
+.bar .n { text-align:right; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; }
+.bar .l { overflow-wrap:anywhere; }
+.comments li { background:var(--tint); border-radius:10px; padding:10px 12px; font-size:13px; overflow-wrap:anywhere; }
+.comments li + li { margin-top:8px; }
+.empty { color:var(--muted); font-size:13px; }
+[hidden] { display:none !important; }
+@media (max-width:520px) { .stats { grid-template-columns:1fr; } .bar { grid-template-columns:100px 1fr 30px; } }
+@media (prefers-reduced-motion:reduce) { * { transition:none !important; } }
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head><body>
+<main class="wrap">
+  <div class="brand">Lynqo · equipe</div>
+  <h1>Resultados da pesquisa</h1>
+  <p class="lead">Atualiza sozinho a cada 15 segundos.</p>
+  <div class="actions"><button class="btn" id="csv" type="button">Baixar CSV</button></div>
+  <section id="resView" aria-live="polite"></section>
+</main>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function el(t, c, x) { var n = document.createElement(t); if (c) n.className = c; if (x != null) n.textContent = x; return n; }
+  var rows = [];
+  function tally(rows, f) { var m = {}; rows.forEach(function (r) { var v = f(r); (Array.isArray(v) ? v : [v]).forEach(function (x) { if (x) m[x] = (m[x] || 0) + 1; }); }); return Object.keys(m).map(function (k) { return [k, m[k]]; }).sort(function (x, y) { return y[1] - x[1]; }); }
+  function avg(rows, k) { var v = rows.map(function (r) { return Number(r[k]); }).filter(function (x) { return x > 0; }); return v.length ? (v.reduce(function (s, x) { return s + x; }, 0) / v.length) : 0; }
+  function bars(title, pairs, total) {
+    var c = el('div', 'card'); c.appendChild(el('h3', null, title));
+    if (!pairs.length) c.appendChild(el('p', 'empty', 'Sem respostas ainda.'));
+    pairs.forEach(function (p) {
+      var r = el('div', 'bar'); r.appendChild(el('span', 'l', p[0]));
+      var tr = el('div', 'tr'), fi = el('div', 'fi'); fi.style.width = (total ? Math.round(p[1] / total * 100) : 0) + '%'; tr.appendChild(fi); r.appendChild(tr);
+      r.appendChild(el('span', 'n', String(p[1]))); c.appendChild(r);
+    });
+    return c;
+  }
+  function renderResults(rows) {
+    var v = $('resView'); v.textContent = ''; var n = rows.length;
+    var st = el('div', 'stats');
+    [[String(n), n === 1 ? 'resposta' : 'respostas'], [n ? avg(rows, 'tr').toFixed(1) : '–', 'ajuda da tradução (de 5)'], [n ? avg(rows, 'use').toFixed(1) : '–', 'usaria o Lynqo (de 5)']].forEach(function (s) {
+      var d = el('div', 'stat'); d.appendChild(el('b', null, s[0])); d.appendChild(el('span', null, s[1])); st.appendChild(d);
+    });
+    v.appendChild(st);
+    v.appendChild(bars('Idioma que mais querem aprender', tally(rows, function (r) { return r.want; }), n));
+    v.appendChild(bars('Idioma que falam melhor', tally(rows, function (r) { return r.native; }), n));
+    v.appendChild(bars('Já usaram app ou site de idiomas?', tally(rows, function (r) { return r.used; }), n));
+    v.appendChild(bars('O que mais atrapalha a prática', tally(rows, function (r) { return r.diff; }), n));
+    var cm = el('div', 'card'); cm.appendChild(el('h3', null, 'Sugestões'));
+    var texts = rows.filter(function (r) { return r.text; }).sort(function (x, y) { return String(y.at).localeCompare(String(x.at)); });
+    if (!texts.length) cm.appendChild(el('p', 'empty', 'Nenhuma sugestão ainda.'));
+    var ul = el('ul', 'comments'); texts.forEach(function (r) { ul.appendChild(el('li', null, r.text)); }); cm.appendChild(ul); v.appendChild(cm);
+  }
+
+  function csvCell(v) { v = Array.isArray(v) ? v.join('; ') : String(v == null ? '' : v); if (/^[=+\-@]/.test(v)) v = "'" + v; return '"' + v.replace(/"/g, '""') + '"'; }
+  $('csv').addEventListener('click', function () {
+    var cols = ['at','native','want','used','diff','tr','use','text'];
+    var out = [cols.join(',')].concat(rows.map(function (r) { return cols.map(function (c) { return csvCell(r[c]); }).join(','); })).join('\n');
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\ufeff' + out], { type:'text/csv' })); a.download = 'pesquisa-lynqo.csv'; a.click();
+  });
+  async function load() {
+    try { var r = await fetch('/api/results', { cache:'no-store' }); if (!r.ok) throw 0; rows = await r.json(); renderResults(rows); }
+    catch (e) { $('resView').textContent = 'Não foi possível carregar os resultados.'; }
+  }
+  load(); setInterval(load, 15000);
+})();
+</script>
+
+</body></html>

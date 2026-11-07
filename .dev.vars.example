@@ -1,0 +1,3 @@
+# Para testar no seu computador: copie este arquivo para .dev.vars e preencha
+ANTHROPIC_API_KEY=sua-chave-aqui
+ADMIN_PASSWORD=escolha-uma-senha
